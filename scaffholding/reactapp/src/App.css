@@ -3,137 +3,175 @@
   margin: 0 auto;
   padding: 20px;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background: linear-gradient(135deg, #e6e6fa 0%, #dda0dd 100%);
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
   min-height: 100vh;
-  color: #4a4a4a;
+  color: #e0e6ed;
 }
 
 .App h1 {
   text-align: center;
-  color: #663399;
+  color: #00d4ff;
   margin-bottom: 40px;
   font-size: 3rem;
   font-weight: 800;
-  text-shadow: 2px 2px 8px rgba(102,51,153,0.3);
+  text-shadow: 0 0 20px rgba(0,212,255,0.5);
   letter-spacing: -1px;
 }
 
-@media (max-width: 1024px) {
-  .feedback-layout {
-    grid-template-columns: 1fr;
-    gap: 30px;
-  }
+/* New Layout Styles */
+.app-header {
+  text-align: center;
+  margin-bottom: 50px;
 }
 
-/* Clock Components Styles */
-.clock-layout {
+.app-header h1 {
+  margin-bottom: 10px;
+}
+
+.subtitle {
+  color: #00d4ff;
+  font-size: 1.2rem;
+  margin: 0;
+  opacity: 0.8;
+}
+
+.main-content {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.components-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 40px;
-  align-items: start;
+  margin-bottom: 40px;
 }
 
-.clock-container {
-  background: #f8f4ff;
-  padding: 30px;
-  border-radius: 16px;
-  border: 2px solid #dda0dd;
-  box-shadow: 0 4px 20px rgba(221, 160, 221, 0.2);
+.component-card {
+  background: #0f1419;
+  border-radius: 20px;
+  border: 2px solid #00d4ff;
+  box-shadow: 0 10px 40px rgba(0,212,255,0.2);
+  overflow: hidden;
+  transition: all 0.3s ease;
 }
 
-.clock-container h2 {
-  color: #663399;
-  margin-bottom: 25px;
-  font-size: 1.8rem;
-  font-weight: 700;
-  text-align: center;
-  border-bottom: 3px solid #663399;
-  padding-bottom: 15px;
+.component-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 20px 60px rgba(0,212,255,0.3);
 }
 
-.time-display {
-  margin-bottom: 30px;
-}
-
-.city-time {
+.card-header {
+  background: #1a1a2e;
+  padding: 20px 30px;
+  border-bottom: 1px solid #00d4ff;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 15px 20px;
-  margin-bottom: 10px;
-  background: white;
-  border-radius: 12px;
-  border: 1px solid #dda0dd;
-  transition: all 0.3s ease;
 }
 
-.city-time:hover {
-  transform: translateX(5px);
-  box-shadow: 0 8px 25px rgba(221, 160, 221, 0.25);
+.card-header h3 {
+  color: #00ffff;
+  margin: 0;
+  font-size: 1.4rem;
+  text-shadow: 0 0 10px rgba(0,255,255,0.5);
 }
 
-.city-name {
+.badge {
+  background: #00d4ff;
+  color: #0f1419;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 0.8rem;
   font-weight: 600;
-  color: #663399;
-  font-size: 16px;
-  min-width: 100px;
 }
 
-.time {
-  font-family: 'Courier New', monospace;
-  font-size: 18px;
+.card-body {
+  padding: 30px;
+}
+
+.timeout-state {
+  text-align: center;
+  padding: 40px 20px;
+}
+
+.timeout-message {
+  color: #666;
+  font-size: 1.2rem;
+  margin-bottom: 20px;
+}
+
+.app-footer {
+  text-align: center;
+  margin-top: 50px;
+  padding: 20px;
+  color: #666;
+  font-style: italic;
+}
+
+/* Greeting Components Styles */
+.greeting-container {
+  text-align: center;
+}
+
+.greeting-container h2 {
+  color: #00ffff;
+  margin-bottom: 25px;
+  font-size: 1.6rem;
   font-weight: 700;
-  color: #663399;
-  background: #f0e6ff;
-  padding: 8px 15px;
+  text-shadow: 0 0 10px rgba(0,255,255,0.5);
+}
+
+.greeting-message {
+  margin-bottom: 20px;
+}
+
+.greeting-text {
+  font-size: 1.5rem;
+  color: #00d4ff;
+  font-weight: 600;
+  margin-bottom: 15px;
+  animation: fadeIn 0.5s ease-in;
+  text-shadow: 0 0 8px rgba(0,212,255,0.4);
+}
+
+.countdown {
+  font-size: 1.2rem;
+  color: #00ffff;
+  font-weight: 500;
+  font-family: 'Courier New', monospace;
+  background: #16213e;
+  padding: 10px 20px;
   border-radius: 8px;
-  border: 1px solid #dda0dd;
+  border: 1px solid #00d4ff;
+  display: inline-block;
+  text-shadow: 0 0 5px rgba(0,255,255,0.3);
 }
 
-.add-city {
-  display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
-}
-
-.add-city input {
-  flex: 1;
-  min-width: 120px;
-  padding: 12px 15px;
-  background: white;
-  border: 2px solid #dda0dd;
-  border-radius: 8px;
-  color: #4a4a4a;
-  font-size: 14px;
-  transition: all 0.3s ease;
-}
-
-.add-city input:focus {
-  outline: none;
-  border-color: #663399;
-  box-shadow: 0 0 0 3px rgba(102, 51, 153, 0.1);
-}
-
-.add-city button {
-  background: linear-gradient(135deg, #663399 0%, #9966cc 100%);
-  color: white;
-  padding: 12px 20px;
+.reset-btn {
+  background: linear-gradient(135deg, #00d4ff 0%, #00ffff 100%);
+  color: #0f1419;
+  padding: 12px 24px;
   border: none;
   border-radius: 8px;
   cursor: pointer;
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 600;
   transition: all 0.3s ease;
-  white-space: nowrap;
 }
 
-.add-city button:hover {
+.reset-btn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(102, 51, 153, 0.3);
+  box-shadow: 0 8px 20px rgba(0,212,255,0.5);
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 @media (max-width: 1024px) {
-  .clock-layout {
+  .components-grid {
     grid-template-columns: 1fr;
     gap: 30px;
   }
@@ -148,37 +186,13 @@
     font-size: 2.2rem;
   }
   
-  .tab-panel {
-    padding: 25px;
+  .component-card {
+    margin-bottom: 20px;
   }
   
-  .tab-button {
-    padding: 15px 20px;
-    font-size: 14px;
-  }
-  
-  .form-container,
-  .display-container,
-  .clock-container {
-    padding: 20px;
-  }
-  
-  .add-city {
+  .card-header {
     flex-direction: column;
-  }
-  
-  .add-city input,
-  .add-city button {
-    width: 100%;
-  }
-  
-  .city-time {
-    flex-direction: column;
-    text-align: center;
     gap: 10px;
-  }
-  
-  .city-name {
-    min-width: auto;
+    text-align: center;
   }
 }
