@@ -3,259 +3,19 @@
   margin: 0 auto;
   padding: 20px;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background: linear-gradient(135deg, #556b2f 0%, #6b8e23 100%);
+  background: linear-gradient(135deg, #e6e6fa 0%, #dda0dd 100%);
   min-height: 100vh;
-  color: #2d3748;
+  color: #4a4a4a;
 }
 
 .App h1 {
   text-align: center;
-  color: white;
+  color: #663399;
   margin-bottom: 40px;
   font-size: 3rem;
   font-weight: 800;
-  text-shadow: 2px 2px 8px rgba(0,0,0,0.3);
+  text-shadow: 2px 2px 8px rgba(102,51,153,0.3);
   letter-spacing: -1px;
-}
-
-.tab-container {
-  background: white;
-  border-radius: 20px;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
-  overflow: hidden;
-}
-
-.tab-buttons {
-  display: flex;
-  background: #f0f4e8;
-  border-bottom: 1px solid #d4d4aa;
-}
-
-.tab-button {
-  flex: 1;
-  padding: 20px 30px;
-  background: transparent;
-  border: none;
-  font-size: 16px;
-  font-weight: 600;
-  color: #556b2f;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  position: relative;
-}
-
-.tab-button:hover {
-  background: #e8f5e8;
-  color: #3d4f1f;
-}
-
-.tab-button.active {
-  background: white;
-  color: #556b2f;
-  box-shadow: 0 -2px 10px rgba(85, 107, 47, 0.1);
-}
-
-.tab-button.active::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 3px;
-  background: linear-gradient(90deg, #556b2f, #6b8e23);
-}
-
-.tab-content {
-  padding: 0;
-}
-
-.tab-panel {
-  padding: 40px;
-  min-height: 600px;
-}
-
-.feedback-layout {
-  display: grid;
-  grid-template-columns: 400px 1fr;
-  gap: 40px;
-  align-items: start;
-}
-
-.form-container {
-  background: #f8faf5;
-  padding: 30px;
-  border-radius: 16px;
-  border: 2px solid #d4d4aa;
-  box-shadow: 0 4px 20px rgba(85, 107, 47, 0.1);
-}
-
-.form-container h2 {
-  color: #556b2f;
-  margin-bottom: 25px;
-  font-size: 1.8rem;
-  font-weight: 700;
-  text-align: center;
-  border-bottom: 3px solid #556b2f;
-  padding-bottom: 15px;
-}
-
-.field {
-  margin-bottom: 25px;
-}
-
-.field label {
-  display: block;
-  margin-bottom: 10px;
-  font-weight: 600;
-  color: #3d4f1f;
-  font-size: 15px;
-}
-
-.field input,
-.field select,
-.field textarea {
-  width: 100%;
-  padding: 15px 20px;
-  background: white;
-  border: 2px solid #c9d1b8;
-  border-radius: 12px;
-  color: #2d3748;
-  font-size: 15px;
-  transition: all 0.3s ease;
-  box-sizing: border-box;
-}
-
-.field input:focus,
-.field select:focus,
-.field textarea:focus {
-  outline: none;
-  border-color: #556b2f;
-  box-shadow: 0 0 0 4px rgba(85, 107, 47, 0.1);
-  transform: translateY(-1px);
-}
-
-.field textarea {
-  resize: vertical;
-  min-height: 120px;
-}
-
-.error {
-  color: #b91c1c;
-  font-size: 13px;
-  display: block;
-  margin-top: 8px;
-  font-weight: 500;
-  padding-left: 5px;
-}
-
-button[type="submit"] {
-  background: linear-gradient(135deg, #556b2f 0%, #6b8e23 100%);
-  color: white;
-  padding: 16px 32px;
-  border: none;
-  border-radius: 12px;
-  cursor: pointer;
-  font-size: 16px;
-  font-weight: 700;
-  transition: all 0.3s ease;
-  box-shadow: 0 8px 25px rgba(85, 107, 47, 0.3);
-  width: 100%;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-button[type="submit"]:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 12px 35px rgba(85, 107, 47, 0.4);
-}
-
-button[type="submit"]:active {
-  transform: translateY(-1px);
-}
-
-.display-container {
-  background: #f8faf5;
-  padding: 30px;
-  border-radius: 16px;
-  border: 2px solid #d4d4aa;
-  box-shadow: 0 4px 20px rgba(85, 107, 47, 0.1);
-  max-height: 600px;
-  overflow-y: auto;
-}
-
-.display-container h2 {
-  color: #556b2f;
-  margin-bottom: 25px;
-  font-size: 1.6rem;
-  font-weight: 700;
-  text-align: center;
-  border-bottom: 3px solid #556b2f;
-  padding-bottom: 15px;
-}
-
-.display-container h3 {
-  color: #3d4f1f;
-  margin-bottom: 20px;
-  font-size: 1.3rem;
-  font-weight: 600;
-}
-
-.no-data {
-  text-align: center;
-  color: #6b7280;
-  font-style: italic;
-  padding: 60px 20px;
-  font-size: 16px;
-}
-
-.students-section,
-.feedbacks-section {
-  margin-bottom: 35px;
-}
-
-.students-grid,
-.feedbacks-grid {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-}
-
-.student-card,
-.feedback-card {
-  background: white;
-  padding: 20px;
-  border-radius: 12px;
-  border: 1px solid #d4d4aa;
-  transition: all 0.3s ease;
-  border-left: 5px solid #556b2f;
-}
-
-.student-card:hover,
-.feedback-card:hover {
-  transform: translateX(5px);
-  box-shadow: 0 8px 25px rgba(85, 107, 47, 0.15);
-  border-left-color: #6b8e23;
-}
-
-.student-card h4 {
-  color: #1f2937;
-  margin-bottom: 12px;
-  font-size: 1.2rem;
-  font-weight: 700;
-}
-
-.student-card p,
-.feedback-card p {
-  color: #4b5563;
-  margin: 8px 0;
-  line-height: 1.6;
-  font-size: 14px;
-}
-
-.student-card strong,
-.feedback-card strong {
-  color: #3d4f1f;
-  font-weight: 600;
 }
 
 @media (max-width: 1024px) {
@@ -274,20 +34,20 @@ button[type="submit"]:active {
 }
 
 .clock-container {
-  background: #f8faf5;
+  background: #f8f4ff;
   padding: 30px;
   border-radius: 16px;
-  border: 2px solid #d4d4aa;
-  box-shadow: 0 4px 20px rgba(85, 107, 47, 0.1);
+  border: 2px solid #dda0dd;
+  box-shadow: 0 4px 20px rgba(221, 160, 221, 0.2);
 }
 
 .clock-container h2 {
-  color: #556b2f;
+  color: #663399;
   margin-bottom: 25px;
   font-size: 1.8rem;
   font-weight: 700;
   text-align: center;
-  border-bottom: 3px solid #556b2f;
+  border-bottom: 3px solid #663399;
   padding-bottom: 15px;
 }
 
@@ -303,18 +63,18 @@ button[type="submit"]:active {
   margin-bottom: 10px;
   background: white;
   border-radius: 12px;
-  border: 1px solid #d4d4aa;
+  border: 1px solid #dda0dd;
   transition: all 0.3s ease;
 }
 
 .city-time:hover {
   transform: translateX(5px);
-  box-shadow: 0 8px 25px rgba(85, 107, 47, 0.15);
+  box-shadow: 0 8px 25px rgba(221, 160, 221, 0.25);
 }
 
 .city-name {
   font-weight: 600;
-  color: #3d4f1f;
+  color: #663399;
   font-size: 16px;
   min-width: 100px;
 }
@@ -323,11 +83,11 @@ button[type="submit"]:active {
   font-family: 'Courier New', monospace;
   font-size: 18px;
   font-weight: 700;
-  color: #556b2f;
-  background: #f0f4e8;
+  color: #663399;
+  background: #f0e6ff;
   padding: 8px 15px;
   border-radius: 8px;
-  border: 1px solid #c9d1b8;
+  border: 1px solid #dda0dd;
 }
 
 .add-city {
@@ -341,21 +101,21 @@ button[type="submit"]:active {
   min-width: 120px;
   padding: 12px 15px;
   background: white;
-  border: 2px solid #c9d1b8;
+  border: 2px solid #dda0dd;
   border-radius: 8px;
-  color: #2d3748;
+  color: #4a4a4a;
   font-size: 14px;
   transition: all 0.3s ease;
 }
 
 .add-city input:focus {
   outline: none;
-  border-color: #556b2f;
-  box-shadow: 0 0 0 3px rgba(85, 107, 47, 0.1);
+  border-color: #663399;
+  box-shadow: 0 0 0 3px rgba(102, 51, 153, 0.1);
 }
 
 .add-city button {
-  background: linear-gradient(135deg, #556b2f 0%, #6b8e23 100%);
+  background: linear-gradient(135deg, #663399 0%, #9966cc 100%);
   color: white;
   padding: 12px 20px;
   border: none;
@@ -369,7 +129,7 @@ button[type="submit"]:active {
 
 .add-city button:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(85, 107, 47, 0.3);
+  box-shadow: 0 8px 20px rgba(102, 51, 153, 0.3);
 }
 
 @media (max-width: 1024px) {
