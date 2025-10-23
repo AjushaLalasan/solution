@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import ProfileForm from './ProfileForm';
-import FeedbackForm from './FeedbackForm';
-import Summary from './Summary';
+import ProfileForm from './components/ProfileForm';
+import FeedbackForm from './components/FeedbackForm';
+import Summary from './components/Summary';
 import './App.css';
 
 function App() {
