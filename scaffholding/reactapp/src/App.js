@@ -1,42 +1,37 @@
 import React, { useState } from 'react';
-import ProfileForm from './components/ProfileForm';
-import FeedbackForm from './components/FeedbackForm';
-import Summary from './components/Summary';
+import ProductEntryForm from './components/ProductEntryForm';
+import SearchForm from './components/SearchForm';
+import ProductList from './components/ProductList';
 import './App.css';
 
 function App() {
-  const [profileData, setProfileData] = useState({
-    name: '',
-    email: '',
-    age: '',
-    gender: ''
-  });
+  const [products, setProducts] = useState([]);
+  const [searchKeyword, setSearchKeyword] = useState('');
 
-  const [feedbackData, setFeedbackData] = useState({
-    rating: '',
-    feedbackMessage: ''
-  });
+  const addProduct = (product) => {
+    setProducts(prev => [...prev, { ...product, id: Date.now() }]);
+  };
+
+  const filteredProducts = products.filter(product =>
+    product.productName.toLowerCase().includes(searchKeyword.toLowerCase()) ||
+    product.category.toLowerCase().includes(searchKeyword.toLowerCase()) ||
+    product.description.toLowerCase().includes(searchKeyword.toLowerCase())
+  );
 
   return (
     <div className="App">
-      <h1>Profile Update and Feedback Forms</h1>
+      <h1>Product Entry and Search System</h1>
       
-      <div className="forms-container">
-        <ProfileForm 
-          profileData={profileData} 
-          setProfileData={setProfileData} 
-        />
+      <div className="app-layout">
+        <div className="left-panel">
+          <ProductEntryForm onAddProduct={addProduct} />
+        </div>
         
-        <FeedbackForm 
-          feedbackData={feedbackData} 
-          setFeedbackData={setFeedbackData} 
-        />
+        <div className="right-panel">
+          <SearchForm onSearch={setSearchKeyword} />
+          <ProductList products={filteredProducts} searchKeyword={searchKeyword} />
+        </div>
       </div>
-      
-      <Summary 
-        profileData={profileData} 
-        feedbackData={feedbackData} 
-      />
     </div>
   );
 }
