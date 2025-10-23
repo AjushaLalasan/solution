@@ -265,6 +265,120 @@ button[type="submit"]:active {
   }
 }
 
+/* Clock Components Styles */
+.clock-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  align-items: start;
+}
+
+.clock-container {
+  background: #f8faf5;
+  padding: 30px;
+  border-radius: 16px;
+  border: 2px solid #d4d4aa;
+  box-shadow: 0 4px 20px rgba(85, 107, 47, 0.1);
+}
+
+.clock-container h2 {
+  color: #556b2f;
+  margin-bottom: 25px;
+  font-size: 1.8rem;
+  font-weight: 700;
+  text-align: center;
+  border-bottom: 3px solid #556b2f;
+  padding-bottom: 15px;
+}
+
+.time-display {
+  margin-bottom: 30px;
+}
+
+.city-time {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 20px;
+  margin-bottom: 10px;
+  background: white;
+  border-radius: 12px;
+  border: 1px solid #d4d4aa;
+  transition: all 0.3s ease;
+}
+
+.city-time:hover {
+  transform: translateX(5px);
+  box-shadow: 0 8px 25px rgba(85, 107, 47, 0.15);
+}
+
+.city-name {
+  font-weight: 600;
+  color: #3d4f1f;
+  font-size: 16px;
+  min-width: 100px;
+}
+
+.time {
+  font-family: 'Courier New', monospace;
+  font-size: 18px;
+  font-weight: 700;
+  color: #556b2f;
+  background: #f0f4e8;
+  padding: 8px 15px;
+  border-radius: 8px;
+  border: 1px solid #c9d1b8;
+}
+
+.add-city {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.add-city input {
+  flex: 1;
+  min-width: 120px;
+  padding: 12px 15px;
+  background: white;
+  border: 2px solid #c9d1b8;
+  border-radius: 8px;
+  color: #2d3748;
+  font-size: 14px;
+  transition: all 0.3s ease;
+}
+
+.add-city input:focus {
+  outline: none;
+  border-color: #556b2f;
+  box-shadow: 0 0 0 3px rgba(85, 107, 47, 0.1);
+}
+
+.add-city button {
+  background: linear-gradient(135deg, #556b2f 0%, #6b8e23 100%);
+  color: white;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+}
+
+.add-city button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(85, 107, 47, 0.3);
+}
+
+@media (max-width: 1024px) {
+  .clock-layout {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+}
+
 @media (max-width: 768px) {
   .App {
     padding: 15px;
@@ -284,7 +398,27 @@ button[type="submit"]:active {
   }
   
   .form-container,
-  .display-container {
+  .display-container,
+  .clock-container {
     padding: 20px;
+  }
+  
+  .add-city {
+    flex-direction: column;
+  }
+  
+  .add-city input,
+  .add-city button {
+    width: 100%;
+  }
+  
+  .city-time {
+    flex-direction: column;
+    text-align: center;
+    gap: 10px;
+  }
+  
+  .city-name {
+    min-width: auto;
   }
 }

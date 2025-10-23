@@ -6,23 +6,37 @@ import App from './App';
 // Mock alert
 global.alert = jest.fn();
 
+// Mock timers for clock components
+jest.useFakeTimers();
+
 describe('Student Admission and Feedback System', () => {
   beforeEach(() => {
     jest.clearAllMocks();
+    jest.clearAllTimers();
+  });
+  
+  afterEach(() => {
+    jest.runOnlyPendingTimers();
   });
 
-  test('renders student admission and feedback forms', () => {
+  test('renders clock tab by default and other tabs', () => {
     render(<App />);
     
-    expect(screen.getByText('Student Admission Form (Controlled)')).toBeInTheDocument();
+    expect(screen.getByTestId('clock-tab')).toBeInTheDocument();
     expect(screen.getByTestId('admission-tab')).toBeInTheDocument();
     expect(screen.getByTestId('feedback-tab')).toBeInTheDocument();
+    expect(screen.getByText('Class Component Clock')).toBeInTheDocument();
+    expect(screen.getByText('Functional Component Clock')).toBeInTheDocument();
   });
 
   test('switches between tabs', () => {
     render(<App />);
     
-    // Initially on admission tab
+    // Initially on clock tab
+    expect(screen.getByText('Class Component Clock')).toBeInTheDocument();
+    
+    // Switch to admission tab
+    fireEvent.click(screen.getByTestId('admission-tab'));
     expect(screen.getByText('Student Admission Form (Controlled)')).toBeInTheDocument();
     
     // Switch to feedback tab
@@ -30,12 +44,35 @@ describe('Student Admission and Feedback System', () => {
     expect(screen.getByText('Feedback Form (Uncontrolled)')).toBeInTheDocument();
     expect(screen.getByText('Student Records')).toBeInTheDocument();
     
-    // Switch back to admission tab
-    fireEvent.click(screen.getByTestId('admission-tab'));
-    expect(screen.getByText('Student Admission Form (Controlled)')).toBeInTheDocument();
+    // Switch back to clock tab
+    fireEvent.click(screen.getByTestId('clock-tab'));
+    expect(screen.getByText('Class Component Clock')).toBeInTheDocument();
+    expect(screen.getByText('Functional Component Clock')).toBeInTheDocument();
+  });
+
+  describe('Clock Components', () => {
+    test('displays both class and functional clocks with default cities', () => {
+      render(<App />);
+      
+      expect(screen.getByText('Class Component Clock')).toBeInTheDocument();
+      expect(screen.getByText('Functional Component Clock')).toBeInTheDocument();
+      
+      // Check for default cities in both components
+      const newYorkElements = screen.getAllByText(/New York:/);
+      const londonElements = screen.getAllByText(/London:/);
+      const tokyoElements = screen.getAllByText(/Tokyo:/);
+      
+      expect(newYorkElements).toHaveLength(2); // One in each component
+      expect(londonElements).toHaveLength(2);
+      expect(tokyoElements).toHaveLength(2);
+    });
   });
 
   describe('Student Admission Form - Controlled Components', () => {
+    beforeEach(() => {
+      render(<App />);
+      fireEvent.click(screen.getByTestId('admission-tab'));
+    });
     test('updates input values when typing', () => {
       render(<App />);
       
