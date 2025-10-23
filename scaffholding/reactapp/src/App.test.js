@@ -6,266 +6,223 @@ import App from './App';
 // Mock alert
 global.alert = jest.fn();
 
-describe('Product Entry and Search System', () => {
+describe('Student Admission and Feedback System', () => {
   beforeEach(() => {
     jest.clearAllMocks();
   });
 
-  test('renders product entry and search forms', () => {
+  test('renders student admission and feedback forms', () => {
     render(<App />);
     
-    expect(screen.getByText('Product Entry Form (Controlled)')).toBeInTheDocument();
-    expect(screen.getByText('Search Form (Uncontrolled)')).toBeInTheDocument();
-    expect(screen.getByText('Product List')).toBeInTheDocument();
+    expect(screen.getByText('Student Admission Form (Controlled)')).toBeInTheDocument();
+    expect(screen.getByTestId('admission-tab')).toBeInTheDocument();
+    expect(screen.getByTestId('feedback-tab')).toBeInTheDocument();
   });
 
-  describe('Product Entry Form - Controlled Components', () => {
+  test('switches between tabs', () => {
+    render(<App />);
+    
+    // Initially on admission tab
+    expect(screen.getByText('Student Admission Form (Controlled)')).toBeInTheDocument();
+    
+    // Switch to feedback tab
+    fireEvent.click(screen.getByTestId('feedback-tab'));
+    expect(screen.getByText('Feedback Form (Uncontrolled)')).toBeInTheDocument();
+    expect(screen.getByText('Student Records')).toBeInTheDocument();
+    
+    // Switch back to admission tab
+    fireEvent.click(screen.getByTestId('admission-tab'));
+    expect(screen.getByText('Student Admission Form (Controlled)')).toBeInTheDocument();
+  });
+
+  describe('Student Admission Form - Controlled Components', () => {
     test('updates input values when typing', () => {
       render(<App />);
       
-      const nameInput = screen.getByTestId('product-name-input');
-      const priceInput = screen.getByTestId('price-input');
-      const categorySelect = screen.getByTestId('category-select');
-      const descriptionTextarea = screen.getByTestId('description-textarea');
+      const nameInput = screen.getByTestId('student-name-input');
+      const emailInput = screen.getByTestId('email-input');
+      const courseSelect = screen.getByTestId('course-select');
+      const ageInput = screen.getByTestId('age-input');
       
-      fireEvent.change(nameInput, { target: { value: 'Test Product' } });
-      fireEvent.change(priceInput, { target: { value: '29.99' } });
-      fireEvent.change(categorySelect, { target: { value: 'Electronics' } });
-      fireEvent.change(descriptionTextarea, { target: { value: 'This is a test product description' } });
+      fireEvent.change(nameInput, { target: { value: 'John Doe' } });
+      fireEvent.change(emailInput, { target: { value: 'john@example.com' } });
+      fireEvent.change(courseSelect, { target: { value: 'Computer Science' } });
+      fireEvent.change(ageInput, { target: { value: '25' } });
       
-      expect(nameInput.value).toBe('Test Product');
-      expect(priceInput.value).toBe('29.99');
-      expect(categorySelect.value).toBe('Electronics');
-      expect(descriptionTextarea.value).toBe('This is a test product description');
+      expect(nameInput.value).toBe('John Doe');
+      expect(emailInput.value).toBe('john@example.com');
+      expect(courseSelect.value).toBe('Computer Science');
+      expect(ageInput.value).toBe('25');
     });
 
     test('shows validation errors for empty required fields', async () => {
       render(<App />);
       
-      const submitButton = screen.getByTestId('add-product-button');
+      const submitButton = screen.getByTestId('admit-student-button');
       fireEvent.click(submitButton);
       
       await waitFor(() => {
-        expect(screen.getByText('Product name is required')).toBeInTheDocument();
-        expect(screen.getByText('Price is required')).toBeInTheDocument();
-        expect(screen.getByText('Category is required')).toBeInTheDocument();
-        expect(screen.getByText('Description should have at least 10 characters')).toBeInTheDocument();
+        expect(screen.getByText('Student name is required')).toBeInTheDocument();
+        expect(screen.getByText('Email is required')).toBeInTheDocument();
+        expect(screen.getByText('Course is required')).toBeInTheDocument();
+        expect(screen.getByText('Age must be between 18 and 60')).toBeInTheDocument();
       });
     });
 
-    test('shows validation error for invalid price', async () => {
+    test('shows validation error for invalid email', async () => {
       render(<App />);
       
-      const priceInput = screen.getByTestId('price-input');
-      fireEvent.change(priceInput, { target: { value: '-10' } });
+      const emailInput = screen.getByTestId('email-input');
+      fireEvent.change(emailInput, { target: { value: 'invalid-email' } });
       
-      const submitButton = screen.getByTestId('add-product-button');
+      const submitButton = screen.getByTestId('admit-student-button');
       fireEvent.click(submitButton);
       
       await waitFor(() => {
-        expect(screen.getByText('Price must be a positive number')).toBeInTheDocument();
+        expect(screen.getByText('Email is invalid')).toBeInTheDocument();
       });
     });
 
-    test('shows validation errors when clicking add button with invalid form', async () => {
+    test('admits student successfully with valid data', async () => {
       render(<App />);
       
-      const submitButton = screen.getByTestId('add-product-button');
+      fireEvent.change(screen.getByTestId('student-name-input'), { target: { value: 'John Doe' } });
+      fireEvent.change(screen.getByTestId('email-input'), { target: { value: 'john@example.com' } });
+      fireEvent.change(screen.getByTestId('course-select'), { target: { value: 'Computer Science' } });
+      fireEvent.change(screen.getByTestId('age-input'), { target: { value: '25' } });
+      
+      const submitButton = screen.getByTestId('admit-student-button');
       fireEvent.click(submitButton);
       
       await waitFor(() => {
-        expect(screen.getByText('Product name is required')).toBeInTheDocument();
-        expect(screen.getByText('Price is required')).toBeInTheDocument();
-        expect(screen.getByText('Category is required')).toBeInTheDocument();
-        expect(screen.getByText('Description should have at least 10 characters')).toBeInTheDocument();
-      });
-    });
-
-    test('submits form when all fields are valid', async () => {
-      render(<App />);
-      
-      fireEvent.change(screen.getByTestId('product-name-input'), { target: { value: 'Test Product' } });
-      fireEvent.change(screen.getByTestId('price-input'), { target: { value: '29.99' } });
-      fireEvent.change(screen.getByTestId('category-select'), { target: { value: 'Electronics' } });
-      fireEvent.change(screen.getByTestId('description-textarea'), { target: { value: 'This is a valid product description' } });
-      
-      const submitButton = screen.getByTestId('add-product-button');
-      fireEvent.click(submitButton);
-      
-      await waitFor(() => {
-        expect(global.alert).toHaveBeenCalledWith('Product added successfully!');
-      });
-    });
-
-    test('adds product successfully with valid data', async () => {
-      render(<App />);
-      
-      fireEvent.change(screen.getByTestId('product-name-input'), { target: { value: 'Test Product' } });
-      fireEvent.change(screen.getByTestId('price-input'), { target: { value: '29.99' } });
-      fireEvent.change(screen.getByTestId('category-select'), { target: { value: 'Electronics' } });
-      fireEvent.change(screen.getByTestId('description-textarea'), { target: { value: 'This is a valid product description' } });
-      
-      const submitButton = screen.getByTestId('add-product-button');
-      fireEvent.click(submitButton);
-      
-      await waitFor(() => {
-        expect(global.alert).toHaveBeenCalledWith('Product added successfully!');
+        expect(global.alert).toHaveBeenCalledWith('Student admitted successfully!');
       });
     });
 
     test('clears errors when user starts typing', async () => {
       render(<App />);
       
-      const submitButton = screen.getByTestId('add-product-button');
+      const submitButton = screen.getByTestId('admit-student-button');
       fireEvent.click(submitButton);
       
       await waitFor(() => {
-        expect(screen.getByText('Product name is required')).toBeInTheDocument();
+        expect(screen.getByText('Student name is required')).toBeInTheDocument();
       });
       
-      const nameInput = screen.getByTestId('product-name-input');
-      fireEvent.change(nameInput, { target: { value: 'T' } });
+      const nameInput = screen.getByTestId('student-name-input');
+      fireEvent.change(nameInput, { target: { value: 'J' } });
       
       await waitFor(() => {
-        expect(screen.queryByText('Product name is required')).not.toBeInTheDocument();
-      });
-    });
-  });
-
-  describe('Search Form - Uncontrolled Components', () => {
-    test('performs search with keyword', async () => {
-      render(<App />);
-      
-      // First add a product
-      fireEvent.change(screen.getByTestId('product-name-input'), { target: { value: 'Laptop' } });
-      fireEvent.change(screen.getByTestId('price-input'), { target: { value: '999.99' } });
-      fireEvent.change(screen.getByTestId('category-select'), { target: { value: 'Electronics' } });
-      fireEvent.change(screen.getByTestId('description-textarea'), { target: { value: 'High performance laptop' } });
-      fireEvent.click(screen.getByTestId('add-product-button'));
-      
-      await waitFor(() => {
-        expect(screen.getByText('Laptop')).toBeInTheDocument();
-      });
-      
-      // Now search
-      const searchInput = screen.getByTestId('search-input');
-      fireEvent.change(searchInput, { target: { value: 'Laptop' } });
-      
-      await waitFor(() => {
-        expect(screen.getByText('Product List (Search: "Laptop")')).toBeInTheDocument();
-      });
-    });
-
-    test('shows no results message when search finds nothing', async () => {
-      render(<App />);
-      
-      const searchInput = screen.getByTestId('search-input');
-      fireEvent.change(searchInput, { target: { value: 'NonExistent' } });
-      
-      await waitFor(() => {
-        expect(screen.getByText('No products found for "NonExistent".')).toBeInTheDocument();
+        expect(screen.queryByText('Student name is required')).not.toBeInTheDocument();
       });
     });
   });
 
-  describe('Product List Component', () => {
-    test('displays no products message initially', () => {
+  describe('Feedback Form - Uncontrolled Components', () => {
+    beforeEach(() => {
       render(<App />);
-      
-      expect(screen.getByText('No products added yet.')).toBeInTheDocument();
+      fireEvent.click(screen.getByTestId('feedback-tab'));
     });
 
-    test('displays added products', async () => {
-      render(<App />);
-      
-      fireEvent.change(screen.getByTestId('product-name-input'), { target: { value: 'Test Product' } });
-      fireEvent.change(screen.getByTestId('price-input'), { target: { value: '29.99' } });
-      fireEvent.change(screen.getByTestId('category-select'), { target: { value: 'Electronics' } });
-      fireEvent.change(screen.getByTestId('description-textarea'), { target: { value: 'This is a test product' } });
-      
-      fireEvent.click(screen.getByTestId('add-product-button'));
+    test('shows validation errors for empty required fields', async () => {
+      const submitButton = screen.getByTestId('submit-feedback-button');
+      fireEvent.click(submitButton);
       
       await waitFor(() => {
-        expect(screen.getByText('Test Product')).toBeInTheDocument();
-        expect(screen.getByText('$29.99')).toBeInTheDocument();
-        expect(screen.getAllByText('Electronics')[1]).toBeInTheDocument();
-        expect(screen.getByText('This is a test product')).toBeInTheDocument();
+        expect(screen.getByText('Student email is required')).toBeInTheDocument();
+        expect(screen.getByText('Feedback message is required')).toBeInTheDocument();
       });
     });
 
-    test('filters products by search keyword', async () => {
+    test('shows validation error for short feedback message', async () => {
+      const feedbackTextarea = screen.getByTestId('feedback-textarea');
+      fireEvent.change(feedbackTextarea, { target: { value: 'Short message' } });
+      
+      const submitButton = screen.getByTestId('submit-feedback-button');
+      fireEvent.click(submitButton);
+      
+      await waitFor(() => {
+        expect(screen.getByText('Feedback message should have at least 20 characters')).toBeInTheDocument();
+      });
+    });
+
+    test('submits feedback successfully with valid data', async () => {
+      const emailInput = screen.getByTestId('student-email-input');
+      const feedbackTextarea = screen.getByTestId('feedback-textarea');
+      
+      fireEvent.change(emailInput, { target: { value: 'student@example.com' } });
+      fireEvent.change(feedbackTextarea, { target: { value: 'This is a very detailed feedback message with more than 20 characters' } });
+      
+      const submitButton = screen.getByTestId('submit-feedback-button');
+      fireEvent.click(submitButton);
+      
+      await waitFor(() => {
+        expect(global.alert).toHaveBeenCalledWith('Feedback submitted successfully!');
+      });
+    });
+  });
+
+  describe('Student Display Component', () => {
+    test('displays admitted students in feedback tab', async () => {
       render(<App />);
       
-      // Add first product
-      fireEvent.change(screen.getByTestId('product-name-input'), { target: { value: 'Laptop' } });
-      fireEvent.change(screen.getByTestId('price-input'), { target: { value: '999.99' } });
-      fireEvent.change(screen.getByTestId('category-select'), { target: { value: 'Electronics' } });
-      fireEvent.change(screen.getByTestId('description-textarea'), { target: { value: 'High performance laptop' } });
-      fireEvent.click(screen.getByTestId('add-product-button'));
+      // Add a student first
+      fireEvent.change(screen.getByTestId('student-name-input'), { target: { value: 'Jane Smith' } });
+      fireEvent.change(screen.getByTestId('email-input'), { target: { value: 'jane@example.com' } });
+      fireEvent.change(screen.getByTestId('course-select'), { target: { value: 'Engineering' } });
+      fireEvent.change(screen.getByTestId('age-input'), { target: { value: '22' } });
+      
+      fireEvent.click(screen.getByTestId('admit-student-button'));
       
       await waitFor(() => {
-        expect(global.alert).toHaveBeenCalledWith('Product added successfully!');
+        expect(global.alert).toHaveBeenCalledWith('Student admitted successfully!');
       });
       
-      // Add second product
-      fireEvent.change(screen.getByTestId('product-name-input'), { target: { value: 'Phone' } });
-      fireEvent.change(screen.getByTestId('price-input'), { target: { value: '599.99' } });
-      fireEvent.change(screen.getByTestId('category-select'), { target: { value: 'Electronics' } });
-      fireEvent.change(screen.getByTestId('description-textarea'), { target: { value: 'Smartphone with great camera' } });
-      fireEvent.click(screen.getByTestId('add-product-button'));
+      // Switch to feedback tab to see the student
+      fireEvent.click(screen.getByTestId('feedback-tab'));
       
       await waitFor(() => {
-        expect(global.alert).toHaveBeenCalledWith('Product added successfully!');
-      });
-      
-      // Search for laptop
-      const searchInput = screen.getByTestId('search-input');
-      fireEvent.change(searchInput, { target: { value: 'Laptop' } });
-      
-      await waitFor(() => {
-        expect(screen.getByText('Laptop')).toBeInTheDocument();
-        expect(screen.queryByText('Phone')).not.toBeInTheDocument();
+        expect(screen.getByText('Jane Smith')).toBeInTheDocument();
+        expect(screen.getByText('jane@example.com')).toBeInTheDocument();
+        expect(screen.getByText('Engineering')).toBeInTheDocument();
       });
     });
   });
 
   describe('Integration Tests', () => {
-    test('complete workflow: add product, search, and display results', async () => {
+    test('complete workflow across tabs', async () => {
       render(<App />);
       
-      // Add a product
-      fireEvent.change(screen.getByTestId('product-name-input'), { target: { value: 'Gaming Mouse' } });
-      fireEvent.change(screen.getByTestId('price-input'), { target: { value: '49.99' } });
-      fireEvent.change(screen.getByTestId('category-select'), { target: { value: 'Electronics' } });
-      fireEvent.change(screen.getByTestId('description-textarea'), { target: { value: 'High precision gaming mouse with RGB lighting' } });
+      // Admit a student
+      fireEvent.change(screen.getByTestId('student-name-input'), { target: { value: 'Alice Johnson' } });
+      fireEvent.change(screen.getByTestId('email-input'), { target: { value: 'alice@example.com' } });
+      fireEvent.change(screen.getByTestId('course-select'), { target: { value: 'Business' } });
+      fireEvent.change(screen.getByTestId('age-input'), { target: { value: '28' } });
       
-      const submitButton = screen.getByTestId('add-product-button');
-      fireEvent.click(submitButton);
+      fireEvent.click(screen.getByTestId('admit-student-button'));
       
       await waitFor(() => {
-        expect(global.alert).toHaveBeenCalledWith('Product added successfully!');
+        expect(global.alert).toHaveBeenCalledWith('Student admitted successfully!');
       });
       
-      // Verify product appears in list
+      // Switch to feedback tab
+      fireEvent.click(screen.getByTestId('feedback-tab'));
+      
+      // Submit feedback
+      fireEvent.change(screen.getByTestId('student-email-input'), { target: { value: 'alice@example.com' } });
+      fireEvent.change(screen.getByTestId('feedback-textarea'), { target: { value: 'Great experience with the admission process and course information provided' } });
+      
+      fireEvent.click(screen.getByTestId('submit-feedback-button'));
+      
       await waitFor(() => {
-        expect(screen.getByText('Gaming Mouse')).toBeInTheDocument();
-        expect(screen.getByText('$49.99')).toBeInTheDocument();
+        expect(global.alert).toHaveBeenCalledWith('Feedback submitted successfully!');
       });
       
-      // Search for the product
-      const searchInput = screen.getByTestId('search-input');
-      fireEvent.change(searchInput, { target: { value: 'Gaming' } });
-      
+      // Verify both are displayed in feedback tab
       await waitFor(() => {
-        expect(screen.getByText('Product List (Search: "Gaming")')).toBeInTheDocument();
-        expect(screen.getByText('Gaming Mouse')).toBeInTheDocument();
-      });
-      
-      // Search for non-existent product
-      fireEvent.change(searchInput, { target: { value: 'Keyboard' } });
-      
-      await waitFor(() => {
-        expect(screen.getByText('No products found for "Keyboard".')).toBeInTheDocument();
+        expect(screen.getByText('Alice Johnson')).toBeInTheDocument();
+        expect(screen.getByText('Business')).toBeInTheDocument();
+        expect(screen.getByText('Great experience with the admission process and course information provided')).toBeInTheDocument();
       });
     });
   });

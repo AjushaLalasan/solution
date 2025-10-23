@@ -1,35 +1,59 @@
 import React, { useState } from 'react';
-import ProductEntryForm from './components/ProductEntryForm';
-import SearchForm from './components/SearchForm';
-import ProductList from './components/ProductList';
+import StudentAdmissionForm from './components/StudentAdmissionForm';
+import FeedbackForm from './components/FeedbackForm';
+import StudentDisplay from './components/StudentDisplay';
 import './App.css';
 
 function App() {
-  const [products, setProducts] = useState([]);
-  const [searchKeyword, setSearchKeyword] = useState('');
+  const [students, setStudents] = useState([]);
+  const [feedbacks, setFeedbacks] = useState([]);
+  const [activeTab, setActiveTab] = useState('admission');
 
-  const addProduct = (product) => {
-    setProducts(prev => [...prev, { ...product, id: Date.now() }]);
+  const addStudent = (student) => {
+    setStudents(prev => [...prev, { ...student, id: Date.now() }]);
   };
 
-  const filteredProducts = products.filter(product =>
-    product.productName.toLowerCase().includes(searchKeyword.toLowerCase()) ||
-    product.category.toLowerCase().includes(searchKeyword.toLowerCase()) ||
-    product.description.toLowerCase().includes(searchKeyword.toLowerCase())
-  );
+  const addFeedback = (feedback) => {
+    setFeedbacks(prev => [...prev, { ...feedback, id: Date.now() }]);
+  };
 
   return (
     <div className="App">
-      <h1>Product Entry and Search System</h1>
+      <h1>Student Management System</h1>
       
-      <div className="app-layout">
-        <div className="left-panel">
-          <ProductEntryForm onAddProduct={addProduct} />
+      <div className="tab-container">
+        <div className="tab-buttons">
+          <button 
+            className={`tab-button ${activeTab === 'admission' ? 'active' : ''}`}
+            onClick={() => setActiveTab('admission')}
+            data-testid="admission-tab"
+          >
+            Student Admission
+          </button>
+          <button 
+            className={`tab-button ${activeTab === 'feedback' ? 'active' : ''}`}
+            onClick={() => setActiveTab('feedback')}
+            data-testid="feedback-tab"
+          >
+            Feedback & Records
+          </button>
         </div>
-        
-        <div className="right-panel">
-          <SearchForm onSearch={setSearchKeyword} />
-          <ProductList products={filteredProducts} searchKeyword={searchKeyword} />
+
+        <div className="tab-content">
+          {activeTab === 'admission' && (
+            <div className="tab-panel">
+              <StudentAdmissionForm onAddStudent={addStudent} />
+            </div>
+          )}
+          
+          {activeTab === 'feedback' && (
+            <div className="tab-panel">
+              <div className="feedback-layout">
+                <FeedbackForm onAddFeedback={addFeedback} />
+                <StudentDisplay students={students} feedbacks={feedbacks} />
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>
