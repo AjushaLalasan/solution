@@ -32,7 +32,6 @@ const FeedbackForm = ({ feedbackData, setFeedbackData }) => {
   };
 
   const handleInputChange = () => {
-    // Clear errors when user starts typing
     setErrors({});
   };
 
