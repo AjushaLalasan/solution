@@ -1,28 +1,22 @@
 import React from 'react';
-import ClassClock from './components/ClassClock';
-import FunctionalClock from './components/FunctionalClock';
+import { Provider } from 'react-redux';
+import store from './store/store';
+import ShoppingCart from './components/ShoppingCart';
 import './App.css';
 
 function App() {
   return (
-    <div className="App">
-      <header className="app-header">
-        <h1>Clock App</h1>
-        <p className="subtitle">React Lifecycle & Hooks Demo</p>
-      </header>
-      
-      <main className="main-content">
-        <div className="components-grid">
-          <div className="component-card">
-            <ClassClock />
-          </div>
-          
-          <div className="component-card">
-            <FunctionalClock />
-          </div>
-        </div>
-      </main>
-    </div>
+    <Provider store={store}>
+      <div className="App">
+        <header className="app-header">
+          <h1>Shopping Cart App</h1>
+        </header>
+        
+        <main className="main-content">
+          <ShoppingCart />
+        </main>
+      </div>
+    </Provider>
   );
 }
 
