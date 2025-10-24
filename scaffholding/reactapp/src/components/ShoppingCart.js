@@ -26,7 +26,7 @@ const ShoppingCart = () => {
 
   return (
     <div className="shopping-cart">
-      <h2>Shopping Cart</h2>
+
       
       <div className="cart-summary">
         <p>Total Items: <span data-testid="total-items">{totalItems}</span></p>
