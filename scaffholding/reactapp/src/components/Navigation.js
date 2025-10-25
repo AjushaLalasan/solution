@@ -7,7 +7,7 @@ const Navigation = () => {
   return (
     <nav className="navigation">
       <div className="nav-brand">
-        <Link to="/home">Portfolio</Link>
+        <Link to="/home">E-Shop</Link>
       </div>
       <ul className="nav-links">
         <li>
@@ -20,18 +20,18 @@ const Navigation = () => {
         </li>
         <li>
           <Link 
-            to="/projects" 
-            className={location.pathname === '/projects' ? 'active' : ''}
+            to="/products" 
+            className={location.pathname === '/products' ? 'active' : ''}
           >
-            Projects
+            Products
           </Link>
         </li>
         <li>
           <Link 
-            to="/contact" 
-            className={location.pathname === '/contact' ? 'active' : ''}
+            to="/cart" 
+            className={location.pathname === '/cart' ? 'active' : ''}
           >
-            Contact
+            Cart
           </Link>
         </li>
       </ul>
