@@ -1,7 +1,7 @@
 import React from 'react';
 import { Provider } from 'react-redux';
 import store from './store/store';
-import ShoppingCart from './components/ShoppingCart';
+import NotesApp from './components/NotesApp';
 import './App.css';
 
 function App() {
@@ -9,11 +9,13 @@ function App() {
     <Provider store={store}>
       <div className="App">
         <header className="app-header">
-          <h1>Shopping Cart App</h1>
+          <h1>Notes App</h1>
         </header>
         
         <main className="main-content">
-          <ShoppingCart />
+          <div className="app-section">
+            <NotesApp />
+          </div>
         </main>
       </div>
     </Provider>

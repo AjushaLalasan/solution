@@ -3,9 +3,8 @@ import { render, screen, fireEvent } from '@testing-library/react';
 import { Provider } from 'react-redux';
 import { configureStore } from '@reduxjs/toolkit';
 import '@testing-library/jest-dom';
-import App from './App';
-import NotesApp from './components/NotesApp';
-import notesReducer from './store/notesSlice';
+import NotesApp from './NotesApp';
+import notesReducer from '../store/notesSlice';
 
 const createTestStore = () => {
   return configureStore({
@@ -23,13 +22,13 @@ const renderWithProvider = (component, store = createTestStore()) => {
   );
 };
 
-describe('Notes App', () => {
+describe('NotesApp', () => {
   test('renders notes app title', () => {
-    renderWithProvider(<App />);
-    expect(screen.getByRole('heading', { level: 1, name: 'Notes App' })).toBeInTheDocument();
+    renderWithProvider(<NotesApp />);
+    expect(screen.getByText('My Notes')).toBeInTheDocument();
   });
 
-  test('displays initial empty notes state', () => {
+  test('displays no notes message initially', () => {
     renderWithProvider(<NotesApp />);
     expect(screen.getByTestId('no-notes')).toHaveTextContent('No notes available');
   });
@@ -72,6 +71,28 @@ describe('Notes Actions', () => {
     expect(screen.getByText('Second note')).toBeInTheDocument();
   });
 
+  test('does not add empty note', () => {
+    renderWithProvider(<NotesApp />);
+    
+    const addButton = screen.getByTestId('add-note-btn');
+    
+    fireEvent.click(addButton);
+    
+    expect(screen.getByTestId('no-notes')).toBeInTheDocument();
+  });
+
+  test('trims whitespace from notes', () => {
+    renderWithProvider(<NotesApp />);
+    
+    const input = screen.getByTestId('note-input');
+    const addButton = screen.getByTestId('add-note-btn');
+    
+    fireEvent.change(input, { target: { value: '  Test note  ' } });
+    fireEvent.click(addButton);
+    
+    expect(screen.getByText('Test note')).toBeInTheDocument();
+  });
+
   test('toggles note importance', () => {
     renderWithProvider(<NotesApp />);
     
@@ -111,13 +132,14 @@ describe('Notes Actions', () => {
     expect(screen.getByTestId('no-notes')).toBeInTheDocument();
   });
 
-  test('does not add empty note', () => {
+  test('handles form submission with enter key', () => {
     renderWithProvider(<NotesApp />);
     
-    const addButton = screen.getByTestId('add-note-btn');
+    const input = screen.getByTestId('note-input');
     
-    fireEvent.click(addButton);
+    fireEvent.change(input, { target: { value: 'Enter key note' } });
+    fireEvent.submit(input.closest('form'));
     
-    expect(screen.getByTestId('no-notes')).toBeInTheDocument();
+    expect(screen.getByText('Enter key note')).toBeInTheDocument();
   });
 });
