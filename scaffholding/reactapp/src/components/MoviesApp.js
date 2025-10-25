@@ -25,7 +25,6 @@ const MoviesApp = () => {
 
   return (
     <div className="movies-app">
-      <h2>Favorite Movies</h2>
       
       <form onSubmit={handleAddMovie} className="add-movie-form">
         <input

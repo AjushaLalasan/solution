@@ -31,7 +31,7 @@ describe('Favorite Movies App', () => {
 
   test('renders movies app component', () => {
     renderWithProvider(<App />);
-    expect(screen.getByText('Favorite Movies')).toBeInTheDocument();
+    expect(screen.getByTestId('movie-input')).toBeInTheDocument();
   });
 
   test('displays no movies message initially', () => {
