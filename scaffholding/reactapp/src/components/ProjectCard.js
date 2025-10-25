@@ -15,6 +15,15 @@ const ProjectCard = React.memo(({ project }) => {
           View on GitHub
         </a>
       )}
+      {project.socialLinks && project.socialLinks.length > 0 && (
+        <div className="social-links">
+          {project.socialLinks.map((link, index) => (
+            <a key={index} href={link.url} className="social-link" target="_blank" rel="noopener noreferrer">
+              {link.name}
+            </a>
+          ))}
+        </div>
+      )}
     </div>
   );
 });

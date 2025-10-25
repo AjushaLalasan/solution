@@ -8,7 +8,10 @@ const Projects = () => {
       title: 'E-commerce Platform',
       description: 'A full-stack e-commerce solution with React and Node.js',
       technologies: ['React', 'Node.js', 'MongoDB'],
-      githubUrl: 'https://github.com/example/ecommerce'
+      githubUrl: 'https://github.com/example/ecommerce',
+      socialLinks: [
+        { name: 'Live Demo', url: 'https://demo.example.com' }
+      ]
     },
     {
       id: 2,
