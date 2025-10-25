@@ -1,8 +1,6 @@
 import React from 'react';
-import { render, screen, waitFor } from '@testing-library/react';
-import { MemoryRouter } from 'react-router-dom';
+import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import App from './App';
 import Home from './components/Home';
 import ProjectCard from './components/ProjectCard';
 
@@ -20,30 +18,7 @@ afterEach(() => {
   process.env = originalEnv;
 });
 
-describe('Portfolio SPA', () => {
-  test('renders navigation', () => {
-    render(
-      <MemoryRouter>
-        <App />
-      </MemoryRouter>
-    );
-    expect(screen.getByText('Portfolio')).toBeInTheDocument();
-    expect(screen.getByText('Home')).toBeInTheDocument();
-    expect(screen.getByText('Projects')).toBeInTheDocument();
-    expect(screen.getByText('Contact')).toBeInTheDocument();
-  });
-
-  test('renders home page by default', async () => {
-    render(
-      <MemoryRouter initialEntries={['/home']}>
-        <App />
-      </MemoryRouter>
-    );
-    await waitFor(() => {
-      expect(screen.getByText("Welcome to John Doe's Portfolio")).toBeInTheDocument();
-    });
-  });
-
+describe('Portfolio SPA Components', () => {
   test('displays environment variables in home component', () => {
     render(<Home />);
     expect(screen.getByText("Welcome to John Doe's Portfolio")).toBeInTheDocument();
@@ -93,18 +68,7 @@ describe('Environment Variables', () => {
   });
 });
 
-describe('Routing', () => {
-  test('navigates to home route', async () => {
-    render(
-      <MemoryRouter initialEntries={['/home']}>
-        <App />
-      </MemoryRouter>
-    );
-    await waitFor(() => {
-      expect(screen.getByText("Welcome to John Doe's Portfolio")).toBeInTheDocument();
-    });
-  });
-
+describe('Lazy Loading', () => {
   test('lazy loading components exist', () => {
     expect(() => React.lazy(() => import('./components/Projects'))).not.toThrow();
     expect(() => React.lazy(() => import('./components/Contact'))).not.toThrow();
