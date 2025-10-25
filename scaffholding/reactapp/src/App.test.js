@@ -2,70 +2,67 @@ import React from 'react';
 import { render, screen, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import Home from './components/Home';
-import ProductItem from './components/ProductItem';
-import Cart from './components/Cart';
+import DestinationCard from './components/DestinationCard';
+import Booking from './components/Booking';
 
 // Mock fetch for API calls
 global.fetch = jest.fn();
 
 beforeEach(() => {
-  process.env.REACT_APP_API_URL = 'https://fakestoreapi.com/products';
+  process.env.REACT_APP_API_URL = 'https://jsonplaceholder.typicode.com/posts';
+  process.env.REACT_APP_AGENCY_NAME = 'Dream Destinations Travel';
   fetch.mockClear();
 });
 
-describe('E-Commerce SPA', () => {
-  test('home component loads immediately', () => {
+describe('Travel Agency SPA', () => {
+  test('home component loads immediately with agency name', () => {
     render(<Home />);
-    expect(screen.getByText('Welcome to E-Shop')).toBeInTheDocument();
-    expect(screen.getByText('Your one-stop destination for quality products')).toBeInTheDocument();
+    expect(screen.getByText('Welcome to Dream Destinations Travel')).toBeInTheDocument();
+    expect(screen.getByText('Discover amazing destinations and create unforgettable memories')).toBeInTheDocument();
   });
 
-  test('product item is memoized and renders correctly', () => {
-    const mockProduct = {
+  test('destination card is memoized and renders correctly', () => {
+    const mockDestination = {
       id: 1,
-      title: 'Test Product',
-      price: 29.99,
-      category: 'electronics',
-      image: 'test-image.jpg'
+      title: 'Paris Adventure',
+      body: 'Explore the city of lights with our guided tours'
     };
 
-    const mockAddToCart = jest.fn();
+    const mockOnSelect = jest.fn();
 
-    render(<ProductItem product={mockProduct} onAddToCart={mockAddToCart} />);
+    render(<DestinationCard destination={mockDestination} onSelect={mockOnSelect} />);
     
-    expect(screen.getByText('Test Product')).toBeInTheDocument();
-    expect(screen.getByText('$29.99')).toBeInTheDocument();
-    expect(screen.getByText('electronics')).toBeInTheDocument();
+    expect(screen.getByText('Paris Adventure')).toBeInTheDocument();
+    expect(screen.getByText('Explore the city of lights with our guided tours')).toBeInTheDocument();
+    expect(screen.getByText('From $999')).toBeInTheDocument();
   });
 
-  test('cart shows empty state with conditional rendering', () => {
-    render(<Cart />);
+  test('booking shows conditional rendering for no destination', () => {
+    render(<Booking />);
     
-    // Since Cart component has sample data, we test the structure
-    expect(screen.getByText('Shopping Cart')).toBeInTheDocument();
-    expect(screen.getByText('Sample Product')).toBeInTheDocument();
+    expect(screen.getByText('Book Your Trip')).toBeInTheDocument();
+    expect(screen.getByText('Please select a destination first to proceed with booking.')).toBeInTheDocument();
   });
 
-  test('environment variable is used for API URL', () => {
-    expect(process.env.REACT_APP_API_URL).toBe('https://fakestoreapi.com/products');
+  test('environment variables are used correctly', () => {
+    expect(process.env.REACT_APP_API_URL).toBe('https://jsonplaceholder.typicode.com/posts');
+    expect(process.env.REACT_APP_AGENCY_NAME).toBe('Dream Destinations Travel');
   });
 
-  test('product item prevents unnecessary re-renders with memo', () => {
-    const mockProduct = {
+  test('destination card prevents unnecessary re-renders with memo', () => {
+    const mockDestination = {
       id: 1,
-      title: 'Test Product',
-      price: 29.99,
-      category: 'electronics',
-      image: 'test-image.jpg'
+      title: 'Paris Adventure',
+      body: 'Explore the city of lights with our guided tours'
     };
 
-    const mockAddToCart = jest.fn();
+    const mockOnSelect = jest.fn();
 
-    const { rerender } = render(<ProductItem product={mockProduct} onAddToCart={mockAddToCart} />);
+    const { rerender } = render(<DestinationCard destination={mockDestination} onSelect={mockOnSelect} />);
     
     // Re-render with same props should not cause re-render due to React.memo
-    rerender(<ProductItem product={mockProduct} onAddToCart={mockAddToCart} />);
+    rerender(<DestinationCard destination={mockDestination} onSelect={mockOnSelect} />);
     
-    expect(screen.getByText('Test Product')).toBeInTheDocument();
+    expect(screen.getByText('Paris Adventure')).toBeInTheDocument();
   });
 });

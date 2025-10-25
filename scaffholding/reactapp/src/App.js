@@ -4,8 +4,8 @@ import Navigation from './components/Navigation';
 import Home from './components/Home';
 import './App.css';
 
-const Products = React.lazy(() => import('./components/Products'));
-const Cart = React.lazy(() => import('./components/Cart'));
+const Destinations = React.lazy(() => import('./components/Destinations'));
+const Booking = React.lazy(() => import('./components/Booking'));
 
 const LoadingSpinner = () => (
   <div className="loading-spinner">
@@ -24,8 +24,8 @@ function App() {
             <Routes>
               <Route path="/" element={<Navigate to="/home" replace />} />
               <Route path="/home" element={<Home />} />
-              <Route path="/products" element={<Products />} />
-              <Route path="/cart" element={<Cart />} />
+              <Route path="/destinations" element={<Destinations />} />
+              <Route path="/booking" element={<Booking />} />
             </Routes>
           </Suspense>
         </main>
