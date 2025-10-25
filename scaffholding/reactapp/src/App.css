@@ -1,188 +1,200 @@
 .App {
-  max-width: 1200px;
+  max-width: 800px;
   margin: 0 auto;
-  padding: 40px 20px;
+  padding: 20px;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   background: #f8fafc;
   min-height: 100vh;
-  color: #1e293b;
+  color: #1a202c;
 }
 
 .app-header {
   text-align: center;
-  margin-bottom: 60px;
+  margin-bottom: 40px;
 }
 
 .app-header h1 {
   font-size: 2.5rem;
   font-weight: 700;
-  color: #0f172a;
-  margin-bottom: 8px;
+  color: #2d3748;
+  margin: 0;
   letter-spacing: -0.025em;
 }
 
 .main-content {
-  max-width: 1000px;
+  max-width: 600px;
   margin: 0 auto;
 }
 
 .app-section {
   background: white;
   border-radius: 12px;
-  border: 1px solid #e2e8f0;
+  padding: 32px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-  margin-bottom: 32px;
-  padding: 24px;
+  border: 1px solid #e2e8f0;
 }
 
-/* Notes App Styles */
-.notes-app {
-  max-width: 600px;
-  margin: 0 auto;
-}
-
-.notes-app h2 {
-  color: #374151;
-  font-size: 1.5rem;
+.movies-app h2 {
+  color: #2d3748;
+  font-size: 1.75rem;
   font-weight: 600;
   margin-bottom: 24px;
   text-align: center;
+  padding-bottom: 12px;
+  border-bottom: 2px solid #e2e8f0;
 }
 
-.add-note-form {
+.add-movie-form {
   display: flex;
   gap: 12px;
   margin-bottom: 32px;
+  padding: 20px;
+  background: #f7fafc;
+  border-radius: 8px;
+  border: 1px solid #e2e8f0;
 }
 
-.note-input {
+.movie-input {
   flex: 1;
   padding: 12px 16px;
-  border: 1px solid #d1d5db;
-  border-radius: 8px;
+  border: 1px solid #cbd5e0;
+  border-radius: 6px;
   font-size: 1rem;
   outline: none;
   transition: border-color 0.2s;
+  background: white;
 }
 
-.note-input:focus {
-  border-color: #3b82f6;
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+.movie-input:focus {
+  border-color: #4299e1;
+  box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.1);
 }
 
 .add-btn {
-  background: #10b981;
+  background: #4299e1;
   color: white;
   border: none;
   padding: 12px 24px;
-  border-radius: 8px;
+  border-radius: 6px;
   cursor: pointer;
   font-weight: 500;
   transition: background-color 0.2s;
 }
 
 .add-btn:hover {
-  background: #059669;
+  background: #3182ce;
 }
 
-.notes-list {
+.movies-list {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 16px;
 }
 
-.no-notes {
+.no-movies {
   text-align: center;
-  color: #6b7280;
+  color: #718096;
   font-style: italic;
-  padding: 32px;
+  padding: 40px;
+  background: #f7fafc;
+  border-radius: 8px;
+  border: 1px dashed #cbd5e0;
 }
 
-.note-item {
-  background: #f9fafb;
-  border: 1px solid #e5e7eb;
+.movie-item {
+  background: #f7fafc;
+  border: 1px solid #e2e8f0;
   border-radius: 8px;
-  padding: 16px;
+  padding: 20px;
   transition: all 0.2s;
 }
 
-.note-item.important {
-  background: #fef3c7;
-  border-color: #f59e0b;
+.movie-item:hover {
+  border-color: #cbd5e0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
-.note-text {
-  display: block;
-  font-size: 1rem;
-  color: #374151;
-  margin-bottom: 12px;
-  line-height: 1.5;
+.movie-item.watched {
+  background: #f0fff4;
+  border-color: #9ae6b4;
 }
 
-.important-indicator {
-  font-size: 1.2rem;
+.movie-title {
+  display: flex;
+  align-items: center;
+  font-size: 1.125rem;
+  color: #2d3748;
+  margin-bottom: 16px;
+  font-weight: 500;
+}
+
+.watched-indicator {
+  font-size: 1.25rem;
+  color: #38a169;
   margin-left: 8px;
+  font-weight: 600;
 }
 
-.note-actions {
+.movie-actions {
   display: flex;
   gap: 8px;
+  justify-content: flex-end;
+}
+
+.toggle-btn, .remove-btn {
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition: background-color 0.2s;
 }
 
 .toggle-btn {
-  background: #6366f1;
+  background: #805ad5;
   color: white;
-  border: none;
-  padding: 6px 12px;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 0.875rem;
-  font-weight: 500;
-  transition: background-color 0.2s;
 }
 
 .toggle-btn:hover {
-  background: #4f46e5;
+  background: #6b46c1;
 }
 
-.toggle-btn.unmark {
-  background: #f59e0b;
+.toggle-btn.unwatch {
+  background: #ed8936;
 }
 
-.toggle-btn.unmark:hover {
-  background: #d97706;
+.toggle-btn.unwatch:hover {
+  background: #dd6b20;
 }
 
-.delete-btn {
-  background: #ef4444;
+.remove-btn {
+  background: #e53e3e;
   color: white;
-  border: none;
-  padding: 6px 12px;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 0.875rem;
-  font-weight: 500;
-  transition: background-color 0.2s;
 }
 
-.delete-btn:hover {
-  background: #dc2626;
+.remove-btn:hover {
+  background: #c53030;
 }
 
 @media (max-width: 768px) {
   .App {
-    padding: 20px 16px;
+    padding: 16px;
   }
   
   .app-header h1 {
     font-size: 2rem;
   }
   
-  .add-note-form {
+  .app-section {
+    padding: 24px;
+  }
+  
+  .add-movie-form {
     flex-direction: column;
   }
   
-  .note-actions {
+  .movie-actions {
     flex-direction: column;
   }
 }
