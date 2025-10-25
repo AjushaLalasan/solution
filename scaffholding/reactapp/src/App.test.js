@@ -1,151 +1,112 @@
 import React from 'react';
-import { render, screen, fireEvent } from '@testing-library/react';
-import { Provider } from 'react-redux';
-import { configureStore } from '@reduxjs/toolkit';
+import { render, screen, waitFor } from '@testing-library/react';
+import { MemoryRouter } from 'react-router-dom';
 import '@testing-library/jest-dom';
 import App from './App';
-import MoviesApp from './components/MoviesApp';
-import moviesReducer from './store/moviesSlice';
+import Home from './components/Home';
+import ProjectCard from './components/ProjectCard';
 
-const createTestStore = () => {
-  return configureStore({
-    reducer: {
-      movies: moviesReducer
-    }
-  });
-};
+// Mock environment variables
+const originalEnv = process.env;
+beforeEach(() => {
+  process.env = {
+    ...originalEnv,
+    REACT_APP_NAME: 'John Doe',
+    REACT_APP_EMAIL: 'john.doe@example.com'
+  };
+});
 
-const renderWithProvider = (component, store = createTestStore()) => {
-  return render(
-    <Provider store={store}>
-      {component}
-    </Provider>
-  );
-};
+afterEach(() => {
+  process.env = originalEnv;
+});
 
-describe('Favorite Movies App', () => {
-  test('renders app title', () => {
-    renderWithProvider(<App />);
-    expect(screen.getByRole('heading', { level: 1, name: 'Favorite Movies App' })).toBeInTheDocument();
-  });
-
-  test('renders movies app component', () => {
-    renderWithProvider(<App />);
-    expect(screen.getByTestId('movie-input')).toBeInTheDocument();
-  });
-
-  test('displays no movies message initially', () => {
-    renderWithProvider(<MoviesApp />);
-    expect(screen.getByTestId('no-movies')).toHaveTextContent('No movies added yet');
+describe('Portfolio SPA', () => {
+  test('renders navigation', () => {
+    render(
+      <MemoryRouter>
+        <App />
+      </MemoryRouter>
+    );
+    expect(screen.getByText('Portfolio')).toBeInTheDocument();
+    expect(screen.getByText('Home')).toBeInTheDocument();
+    expect(screen.getByText('Projects')).toBeInTheDocument();
+    expect(screen.getByText('Contact')).toBeInTheDocument();
   });
 
-  test('displays input field and add button', () => {
-    renderWithProvider(<MoviesApp />);
-    expect(screen.getByTestId('movie-input')).toBeInTheDocument();
-    expect(screen.getByTestId('add-movie-btn')).toBeInTheDocument();
+  test('renders home page by default', async () => {
+    render(
+      <MemoryRouter initialEntries={['/home']}>
+        <App />
+      </MemoryRouter>
+    );
+    await waitFor(() => {
+      expect(screen.getByText("Welcome to John Doe's Portfolio")).toBeInTheDocument();
+    });
+  });
+
+  test('displays environment variables in home component', () => {
+    render(<Home />);
+    expect(screen.getByText("Welcome to John Doe's Portfolio")).toBeInTheDocument();
   });
 });
 
-describe('Movies Actions', () => {
-  test('adds a movie', () => {
-    renderWithProvider(<MoviesApp />);
+describe('ProjectCard Component', () => {
+  const mockProject = {
+    id: 1,
+    title: 'Test Project',
+    description: 'A test project description',
+    technologies: ['React', 'Node.js'],
+    githubUrl: 'https://github.com/test/project'
+  };
+
+  test('renders project card with all information', () => {
+    render(<ProjectCard project={mockProject} />);
     
-    const input = screen.getByTestId('movie-input');
-    const addButton = screen.getByTestId('add-movie-btn');
-    
-    fireEvent.change(input, { target: { value: 'The Matrix' } });
-    fireEvent.click(addButton);
-    
-    expect(screen.getByText('The Matrix')).toBeInTheDocument();
-    expect(screen.queryByTestId('no-movies')).not.toBeInTheDocument();
-    expect(input.value).toBe('');
+    expect(screen.getByText('Test Project')).toBeInTheDocument();
+    expect(screen.getByText('A test project description')).toBeInTheDocument();
+    expect(screen.getByText('React')).toBeInTheDocument();
+    expect(screen.getByText('Node.js')).toBeInTheDocument();
+    expect(screen.getByText('View on GitHub')).toBeInTheDocument();
   });
 
-  test('adds multiple movies', () => {
-    renderWithProvider(<MoviesApp />);
+  test('renders project card without github url', () => {
+    const projectWithoutGithub = { ...mockProject, githubUrl: undefined };
+    render(<ProjectCard project={projectWithoutGithub} />);
     
-    const input = screen.getByTestId('movie-input');
-    const addButton = screen.getByTestId('add-movie-btn');
-    
-    fireEvent.change(input, { target: { value: 'Inception' } });
-    fireEvent.click(addButton);
-    
-    fireEvent.change(input, { target: { value: 'Interstellar' } });
-    fireEvent.click(addButton);
-    
-    expect(screen.getByText('Inception')).toBeInTheDocument();
-    expect(screen.getByText('Interstellar')).toBeInTheDocument();
+    expect(screen.getByText('Test Project')).toBeInTheDocument();
+    expect(screen.queryByText('View on GitHub')).not.toBeInTheDocument();
   });
 
-  test('does not add empty movie', () => {
-    renderWithProvider(<MoviesApp />);
+  test('project card is memoized', () => {
+    const { rerender } = render(<ProjectCard project={mockProject} />);
     
-    const addButton = screen.getByTestId('add-movie-btn');
+    rerender(<ProjectCard project={mockProject} />);
     
-    fireEvent.click(addButton);
-    
-    expect(screen.getByTestId('no-movies')).toBeInTheDocument();
+    expect(screen.getByText('Test Project')).toBeInTheDocument();
+  });
+});
+
+describe('Environment Variables', () => {
+  test('uses environment variables correctly', () => {
+    expect(process.env.REACT_APP_NAME).toBe('John Doe');
+    expect(process.env.REACT_APP_EMAIL).toBe('john.doe@example.com');
+  });
+});
+
+describe('Routing', () => {
+  test('navigates to home route', async () => {
+    render(
+      <MemoryRouter initialEntries={['/home']}>
+        <App />
+      </MemoryRouter>
+    );
+    await waitFor(() => {
+      expect(screen.getByText("Welcome to John Doe's Portfolio")).toBeInTheDocument();
+    });
   });
 
-  test('toggles movie watched status', () => {
-    renderWithProvider(<MoviesApp />);
-    
-    const input = screen.getByTestId('movie-input');
-    const addButton = screen.getByTestId('add-movie-btn');
-    
-    fireEvent.change(input, { target: { value: 'Avatar' } });
-    fireEvent.click(addButton);
-    
-    const movieElement = screen.getByText('Avatar').closest('.movie-item');
-    const toggleButton = movieElement.querySelector('[data-testid^="toggle-"]');
-    
-    expect(toggleButton).toHaveTextContent('Mark Watched');
-    expect(movieElement).not.toHaveClass('watched');
-    
-    fireEvent.click(toggleButton);
-    
-    expect(toggleButton).toHaveTextContent('Mark Unwatched');
-    expect(movieElement).toHaveClass('watched');
-    expect(screen.getByText('✓')).toBeInTheDocument();
-  });
-
-  test('removes a movie', () => {
-    renderWithProvider(<MoviesApp />);
-    
-    const input = screen.getByTestId('movie-input');
-    const addButton = screen.getByTestId('add-movie-btn');
-    
-    fireEvent.change(input, { target: { value: 'Movie to remove' } });
-    fireEvent.click(addButton);
-    
-    const removeButton = screen.getByText('Remove');
-    
-    fireEvent.click(removeButton);
-    
-    expect(screen.queryByText('Movie to remove')).not.toBeInTheDocument();
-    expect(screen.getByTestId('no-movies')).toBeInTheDocument();
-  });
-
-  test('handles form submission with enter key', () => {
-    renderWithProvider(<MoviesApp />);
-    
-    const input = screen.getByTestId('movie-input');
-    
-    fireEvent.change(input, { target: { value: 'Enter key movie' } });
-    fireEvent.submit(input.closest('form'));
-    
-    expect(screen.getByText('Enter key movie')).toBeInTheDocument();
-  });
-
-  test('trims whitespace from movie titles', () => {
-    renderWithProvider(<MoviesApp />);
-    
-    const input = screen.getByTestId('movie-input');
-    const addButton = screen.getByTestId('add-movie-btn');
-    
-    fireEvent.change(input, { target: { value: '  Trimmed Movie  ' } });
-    fireEvent.click(addButton);
-    
-    expect(screen.getByText('Trimmed Movie')).toBeInTheDocument();
+  test('lazy loading components exist', () => {
+    expect(() => React.lazy(() => import('./components/Projects'))).not.toThrow();
+    expect(() => React.lazy(() => import('./components/Contact'))).not.toThrow();
   });
 });

@@ -1,24 +1,30 @@
-import React from 'react';
-import { Provider } from 'react-redux';
-import store from './store/store';
-import MoviesApp from './components/MoviesApp';
+import React, { Suspense } from 'react';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import Navigation from './components/Navigation';
+import Home from './components/Home';
+import LoadingSpinner from './components/LoadingSpinner';
 import './App.css';
+
+const Projects = React.lazy(() => import('./components/Projects'));
+const Contact = React.lazy(() => import('./components/Contact'));
 
 function App() {
   return (
-    <Provider store={store}>
+    <Router>
       <div className="App">
-        <header className="app-header">
-          <h1>Favorite Movies App</h1>
-        </header>
-        
+        <Navigation />
         <main className="main-content">
-          <div className="app-section">
-            <MoviesApp />
-          </div>
+          <Suspense fallback={<LoadingSpinner />}>
+            <Routes>
+              <Route path="/" element={<Navigate to="/home" replace />} />
+              <Route path="/home" element={<Home />} />
+              <Route path="/projects" element={<Projects />} />
+              <Route path="/contact" element={<Contact />} />
+            </Routes>
+          </Suspense>
         </main>
       </div>
-    </Provider>
+    </Router>
   );
 }
 
